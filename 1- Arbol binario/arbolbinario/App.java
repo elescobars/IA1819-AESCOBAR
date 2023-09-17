@@ -1,24 +1,33 @@
 package arbolbinario;
 
 public class App {
-    
+
     public static void main(String[] args) {
 
+        ArbolBinario arbolVacio = new ArbolBinario();
+        if (arbolVacio.vacio()) {
+            System.out.println("El arbolVacio esta vacio!");
+        } else {
+            System.out.println("El arbolVacio no esta vacio!");
+        }
+
         ArbolBinario ab = new ArbolBinario();
-        ab.agregar(6);
-        ab.agregar(4);
-        ab.agregar(8);
-        ab.agregar(3);
-        ab.agregar(5);
-        ab.agregar(7);
-        ab.agregar(9);
+        ab.agregar(18);
+        ab.agregar(22);
+        ab.agregar(16);
+        ab.agregar(14);
+        ab.agregar(17);
+        ab.agregar(24);
+        ab.agregar(21);
 
-        int valorPrueba = 6;
-        System.out.println("El arbol contiene un " + valorPrueba + ": " + ab.buscaNodo(valorPrueba));
+        int valorPrueba = 24;
+        System.out.println("\nBusqueda en el arbol: el arbol contiene un " + valorPrueba + "? " + ab.buscaNodo(valorPrueba));
 
-        System.out.println("Recorrido del arbol: ");
+        System.out.println("\nRecorrido del arbol: ");
         ab.recorrerEnAnchura();
 
+        System.out.println("\nImpresion del arbol binario:");
+        ab.imprimir(System.out);
     }
 
 }

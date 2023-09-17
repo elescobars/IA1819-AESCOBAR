@@ -1,5 +1,6 @@
 package arbolbinario;
 
+import java.io.PrintStream;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -7,7 +8,7 @@ public class ArbolBinario {
     Nodo raiz;
 
     private Nodo agregarRecursivo(Nodo actual, int valor) {
-        if (actual==null) {
+        if (actual == null) {
             return new Nodo(valor);
         }
 
@@ -30,9 +31,11 @@ public class ArbolBinario {
             return true;
         }
         // Utilizando la busqueda en pre orden, pues visita primero los nodos izquierdos
-        return valor < actual.valor ? buscaNodoRecursivo(actual.izquierda, valor) : buscaNodoRecursivo(actual.derecha, valor);
+        return valor < actual.valor ? buscaNodoRecursivo(actual.izquierda, valor)
+                : buscaNodoRecursivo(actual.derecha, valor);
     }
 
+    // Imprimen los nodos en el orden en que son visitados
     private void recorrerEnOrdenRecursivo(Nodo nodo) {
         if (nodo != null) {
             recorrerEnOrdenRecursivo(nodo.izquierda);
@@ -54,6 +57,26 @@ public class ArbolBinario {
             recorrerEnPostOrdenRecursivo(nodo.izquierda);
             recorrerEnPostOrdenRecursivo(nodo.derecha);
             System.out.println(nodo.valor);
+        }
+    }
+
+    private void recorrerParaImpresion(StringBuilder sb, String espacio, String apuntador, Nodo nodo) {
+        if (nodo != null) {
+            sb.append(espacio);
+            sb.append(apuntador);
+            sb.append("Nodo ");
+            sb.append(nodo.valor);
+            sb.append("\n");
+
+            StringBuilder pb = new StringBuilder(espacio);
+            pb.append("│  ");
+
+            String espacioAmbos = pb.toString();
+            String espacioDerecha = "└──";
+            String espacioIzquierda = (nodo.derecha != null) ? "├──" : "└──";
+
+            recorrerParaImpresion(sb, espacioAmbos, espacioIzquierda, nodo.izquierda);
+            recorrerParaImpresion(sb, espacioAmbos, espacioDerecha, nodo.derecha);
         }
     }
 
@@ -99,5 +122,19 @@ public class ArbolBinario {
                 nodos.add(nodo.derecha);
             }
         }
+    }
+
+    public void imprimir(PrintStream os) {
+        StringBuilder sb = new StringBuilder();
+        recorrerParaImpresion(sb, "", "", raiz);
+        os.print(sb.toString());
+    }
+
+    public boolean vacio() {
+        if (raiz == null) {
+            return true;
+        }
+
+        return false;
     }
 }
