@@ -19,7 +19,6 @@ screen.fill(COLOR_FONDO)
 
 # tablero
 tablero = np.zeros((TABLERO_FILAS, TABLERO_COLUMNAS))
-print(tablero)
 
 
 def dibuja_lineas():
@@ -33,15 +32,47 @@ def dibuja_lineas():
     pygame.draw.line(screen, COLOR_LINEA, (400, 0), (400, 600), ANCHO_LINEA)
 
 
+# funcion para marcar espacios en el tablero dependiendo de quien los selecciona
 def marcar_espacio(fila, columna, jugador):
     tablero[fila][columna] = jugador
 
 
+# funcion que comprueba si el espacio determinado por fila y columna esta disponible
+def espacio_disponible(fila, columna):
+    return tablero[fila][columna] == 0
+
+
+# funcion que recorre el tablero y determina si esta lleno o no
+def tablero_lleno():
+    for fil in range(TABLERO_FILAS):
+        for col in range(TABLERO_COLUMNAS):
+            if tablero[fil][col] == 0:
+                return False
+    return True
+
+
 dibuja_lineas()
+
+jugador = 1
 
 # loop principal
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             sys.exit()
+
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            mouseX = event.pos[0]  # coordenada x
+            mouseY = event.pos[1]  # coordenada y
+            fil_click = int(mouseY // 200)
+            col_click = int(mouseX // 200)
+
+            if espacio_disponible(fil_click, col_click):
+                if jugador == 1:
+                    marcar_espacio(fil_click, col_click, 1)
+                    jugador = 2
+                elif jugador == 2:
+                    marcar_espacio(fil_click, col_click, 2)
+                    jugador = 1
+
     pygame.display.update()
