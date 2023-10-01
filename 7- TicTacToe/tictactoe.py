@@ -5,13 +5,14 @@ pygame.init()
 
 ANCHO_VENTANA = 600  # px
 ALTURA_VENTANA = 600  # px
-ANCHO_LINEA = 10  # px
-TABLERO_FILAS = 3
-TABLERO_COLUMNAS = 3
-RADIO_CIRCULO = 60  # px
-ANCHO_CIRCULO = 15  # px
-ANCHO_CRUZ = 25  # px
-ESPACIO_CRUZ = 50  # px
+ANCHO_LINEA = 5  # px
+ANCHO_LINEA_GANADOR = 10 # px
+RADIO_CIRCULO = 40  # px
+ANCHO_CIRCULO = 10  # px
+ANCHO_CRUZ = 20  # px
+PADDING_CRUZ = 25  # px
+TABLERO_FILAS = 5
+TABLERO_COLUMNAS = 5
 
 # colores en constantes
 COLOR_FONDO = (68, 71, 90)  # rgb
@@ -23,7 +24,7 @@ jugador = 1
 juego_terminado = False
 
 screen = pygame.display.set_mode((ANCHO_VENTANA, ALTURA_VENTANA))
-pygame.display.set_caption("Gato Minimax")
+pygame.display.set_caption("TicTacToe 5x5 Minimax")
 screen.fill(COLOR_FONDO)
 
 # tablero
@@ -32,13 +33,21 @@ tablero = np.zeros((TABLERO_FILAS, TABLERO_COLUMNAS))
 
 def dibuja_lineas():
     # linea horizontal 1
-    pygame.draw.line(screen, COLOR_LINEA, (0, 200), (600, 200), ANCHO_LINEA)
+    pygame.draw.line(screen, COLOR_LINEA, (0, 120), (600, 120), ANCHO_LINEA)
     # linea horizontal 2
-    pygame.draw.line(screen, COLOR_LINEA, (0, 400), (600, 400), ANCHO_LINEA)
+    pygame.draw.line(screen, COLOR_LINEA, (0, 240), (600, 240), ANCHO_LINEA)
+    # linea horizontal 3
+    pygame.draw.line(screen, COLOR_LINEA, (0, 360), (600, 360), ANCHO_LINEA)
+    # linea horizontal 4
+    pygame.draw.line(screen, COLOR_LINEA, (0, 480), (600, 480), ANCHO_LINEA)
     # linea vertical 1
-    pygame.draw.line(screen, COLOR_LINEA, (200, 0), (200, 600), ANCHO_LINEA)
+    pygame.draw.line(screen, COLOR_LINEA, (120, 0), (120, 600), ANCHO_LINEA)
     # linea vertical 2
-    pygame.draw.line(screen, COLOR_LINEA, (400, 0), (400, 600), ANCHO_LINEA)
+    pygame.draw.line(screen, COLOR_LINEA, (240, 0), (240, 600), ANCHO_LINEA)
+    # linea vertical 3
+    pygame.draw.line(screen, COLOR_LINEA, (360, 0), (360, 600), ANCHO_LINEA)
+    # linea vertical 4
+    pygame.draw.line(screen, COLOR_LINEA, (480, 0), (480, 600), ANCHO_LINEA)
 
 
 # funcion para marcar espacios en el tablero dependiendo de quien los selecciona
@@ -67,6 +76,8 @@ def busca_ganador(jugador):
             tablero[0][col] == jugador
             and tablero[1][col] == jugador
             and tablero[2][col] == jugador
+            and tablero[3][col] == jugador
+            and tablero[4][col] == jugador
         ):
             dibuja_linea_ganador_vert(col, jugador)
             return True
@@ -77,15 +88,19 @@ def busca_ganador(jugador):
             tablero[fil][0] == jugador
             and tablero[fil][1] == jugador
             and tablero[fil][2] == jugador
+            and tablero[fil][3] == jugador
+            and tablero[fil][4] == jugador
         ):
             dibuja_linea_ganador_horz(fil, jugador)
             return True
 
     # busca ganador en la diagonal ascendente
     if (
-        tablero[2][0] == jugador
-        and tablero[1][1] == jugador
-        and tablero[0][2] == jugador
+        tablero[4][0] == jugador
+        and tablero[3][1] == jugador
+        and tablero[2][2] == jugador
+        and tablero[1][3] == jugador
+        and tablero[0][4] == jugador
     ):
         dibuja_linea_ganador_diag_asc(jugador)
         return True
@@ -95,6 +110,8 @@ def busca_ganador(jugador):
         tablero[0][0] == jugador
         and tablero[1][1] == jugador
         and tablero[2][2] == jugador
+        and tablero[3][3] == jugador
+        and tablero[4][4] == jugador
     ):
         dibuja_linea_ganador_diag_desc(jugador)
         return True
@@ -104,25 +121,25 @@ def busca_ganador(jugador):
 
 
 def dibuja_linea_ganador_vert(col, jugador):
-    posX = col * 200 + 100
+    posX = col * 120 + 60
 
     if jugador == 1:
         color = COLOR_CIRCULOS
     elif jugador == 2:
         color = COLOR_CRUCES
 
-    pygame.draw.line(screen, color, (posX, 15), (posX, ALTURA_VENTANA - 15), ANCHO_LINEA)
+    pygame.draw.line(screen, color, (posX, 15), (posX, ALTURA_VENTANA - 15), ANCHO_LINEA_GANADOR)
 
 
 def dibuja_linea_ganador_horz(fil, jugador):
-    posY = fil * 200 + 100
+    posY = fil * 120 + 60
 
     if jugador == 1:
         color = COLOR_CIRCULOS
     elif jugador == 2:
         color = COLOR_CRUCES
 
-    pygame.draw.line(screen, color, (15, posY), (ANCHO_VENTANA - 15, posY), ANCHO_LINEA)
+    pygame.draw.line(screen, color, (15, posY), (ANCHO_VENTANA - 15, posY), ANCHO_LINEA_GANADOR)
 
 
 def dibuja_linea_ganador_diag_asc(jugador):
@@ -131,7 +148,7 @@ def dibuja_linea_ganador_diag_asc(jugador):
     elif jugador == 2:
         color = COLOR_CRUCES
 
-    pygame.draw.line(screen, color, (15, ALTURA_VENTANA - 15), (ANCHO_VENTANA - 15, 15), ANCHO_LINEA)
+    pygame.draw.line(screen, color, (15, ALTURA_VENTANA - 15), (ANCHO_VENTANA - 15, 15), ANCHO_LINEA_GANADOR)
 
 
 def dibuja_linea_ganador_diag_desc(jugador):
@@ -140,18 +157,18 @@ def dibuja_linea_ganador_diag_desc(jugador):
     elif jugador == 2:
         color = COLOR_CRUCES
 
-    pygame.draw.line(screen, color, (15, 15), (ANCHO_VENTANA - 15, ALTURA_VENTANA - 15), ANCHO_LINEA)
+    pygame.draw.line(screen, color, (15, 15), (ANCHO_VENTANA - 15, ALTURA_VENTANA - 15), ANCHO_LINEA_GANADOR)
 
 
 def dibuja_figuras():
     for fil in range(TABLERO_FILAS):
         for col in range(TABLERO_COLUMNAS):
             if tablero[fil][col] == 1:
-                # ancho de la ventana dividida entre 3, despues ancho de la ventana dividida entre 6
+                # ancho de la ventana dividida entre 5, despues ancho de la ventana dividida entre 10
                 pygame.draw.circle(
                     screen,
                     COLOR_CIRCULOS,
-                    (int(col * 200 + 100), int(fil * 200 + 100)),
+                    (int(col * 120 + 60), int(fil * 120 + 60)),
                     RADIO_CIRCULO,
                     ANCHO_CIRCULO,
                 )
@@ -159,15 +176,15 @@ def dibuja_figuras():
                 pygame.draw.line(
                     screen,
                     COLOR_CRUCES,
-                    (col * 200 + ESPACIO_CRUZ, fil * 200 + 200 - ESPACIO_CRUZ),
-                    (col * 200 + 200 - ESPACIO_CRUZ, fil * 200 + ESPACIO_CRUZ),
+                    (col * 120 + PADDING_CRUZ, fil * 120 + 120 - PADDING_CRUZ),
+                    (col * 120 + 120 - PADDING_CRUZ, fil * 120 + PADDING_CRUZ),
                     ANCHO_CRUZ,
                 )
                 pygame.draw.line(
                     screen,
                     COLOR_CRUCES,
-                    (col * 200 + ESPACIO_CRUZ, fil * 200 + ESPACIO_CRUZ),
-                    (col * 200 + 200 - ESPACIO_CRUZ, fil * 200 + 200 - ESPACIO_CRUZ),
+                    (col * 120 + PADDING_CRUZ, fil * 120 + PADDING_CRUZ),
+                    (col * 120 + 120 - PADDING_CRUZ, fil * 120 + 120 - PADDING_CRUZ),
                     ANCHO_CRUZ,
                 )
 
@@ -194,8 +211,8 @@ while True:
         if event.type == pygame.MOUSEBUTTONDOWN and not juego_terminado:
             mouseX = event.pos[0]  # coordenada x
             mouseY = event.pos[1]  # coordenada y
-            fil_click = int(mouseY // 200)
-            col_click = int(mouseX // 200)
+            fil_click = int(mouseY // 120)
+            col_click = int(mouseX // 120)
 
             if espacio_disponible(fil_click, col_click):
                 if jugador == 1:
@@ -209,6 +226,7 @@ while True:
                         juego_terminado = True
                     jugador = 1
                 dibuja_figuras()
+                print(tablero)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
