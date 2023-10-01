@@ -1,4 +1,5 @@
-import pygame, sys
+import sys
+import pygame
 import numpy as np
 
 pygame.init()
@@ -24,7 +25,7 @@ jugador = 1
 juego_terminado = False
 
 screen = pygame.display.set_mode((ANCHO_VENTANA, ALTURA_VENTANA))
-pygame.display.set_caption("TicTacToe 5x5 Minimax")
+pygame.display.set_caption("TicTacToe 5x5 PvP")
 screen.fill(COLOR_FONDO)
 
 # tablero
@@ -226,7 +227,8 @@ while True:
                         juego_terminado = True
                     jugador = 1
                 dibuja_figuras()
-                print(tablero)
+                # mostrar el estado del juego en el tablero de consola
+                # print(tablero)
 
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_r:
