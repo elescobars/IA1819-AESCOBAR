@@ -189,6 +189,7 @@ def HacerMovimiento(tablero, jugador, modo):
             Compara_X(tablero)
 
 
+# Modo de juego de jugador vs IA que inicia el flujo recursivo de Minimax
 def JugadorVersusIA():
     while True:
         try:
@@ -215,7 +216,7 @@ def JugadorVersusIA():
     ImprimeResultado(tablero)
 
 
-# Driver Code
+# Llamada principal
 print("=================================================")
 print("Juego del gato utilizando Minimax con poda Alfa-B")
 print("=================================================")
